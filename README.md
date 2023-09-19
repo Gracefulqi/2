@@ -39,6 +39,8 @@ do
                 --binSize 10 \
                 --normalizeUsing RPGC \
                 --effectiveGenomeSize 119481543
+        done
+done
 ```
 
 
