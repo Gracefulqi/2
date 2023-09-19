@@ -30,11 +30,15 @@ do
                --dta-cufflinks \
                -1 /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/fil2/${name}-${i}_R1.fastp.fastq.gz \
                -2 /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/fil2/${name}-${i}_R2.fastp.fastq.gz | \
-
         samtools view -ShuF 4 -q 20 -f 2 -@ 8 - | \
-        samtools sort -@ 8 -o /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/map/rz1.rep1.sorted.bam -
+        samtools sort -@ 8 -o /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/map2/${name}-${i}.sorted.bam -
 
-
+        samtools index /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/map2/${name}-${i}.sorted.bam \
+        bamCoverage --bam /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/map2/${name}-${i}.sorted.bam \
+                -o rz1.deeptools.bw \
+                --binSize 10 \
+                --normalizeUsing RPGC \
+                --effectiveGenomeSize 119481543
 ```
 
 
