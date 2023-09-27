@@ -17,12 +17,11 @@ do
     do
         fastp     -w 12 -q 20 -u 20 \
                 -i /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/rawdata/${name}-${i}_R1.fastq.gz \
-                -o /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/fil2/${name}-${i}_R1.fastp.fastq.gz \
+              -o /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/qc_data/${name}-${i}_R1.fastp.fq.gz \#qc_data文件夹需要提前建好
                 -I /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/rawdata/${name}-${i}_R2.fastq.gz \
-                -O /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/fil2/${name}-${i}_R2.fastp.fastq.gz \
-                --html /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/fil/${name}-${i}.html
-                -j /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/fil2/${name}-${i}.fastp.json \
-                -h /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/fil2/${name}-${i}.fastp.html
+                -O /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/qc_data/${name}-${i}_R2.fastp.fq.gz \
+                -j /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/qc_data/${name}-${i}.fastp.json \
+                -h /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/qc_data/${name}-${i}.fastp.html
 
         hisat2 -p 12
                -x /public/home/zhangqq/Tair10_genome/hisat2_index/TAIR10 \
