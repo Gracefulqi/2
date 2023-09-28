@@ -75,7 +75,8 @@ do
     do
         stringtie /public/home/zhangqq/RNA-seq_Col_rz1/mapping_data/${name}-${i}.sorted.bam \ # 此bam是samtools sort处理后的文件
           -G /public/home/zhangqq/Tair10_genome/TAIR10.gff3 \ #参考基因组注释文件
-          -l ${name}-${i} \
+         --rf \#链特异性建库方式(fr-firststrand比如dUTP)
+         -l ${name}-${i} \#转录本名称的前缀
          -o /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/${name}-${i}.transcripts.stringtie.gtf \
           -p 12 -e #如果现有的参考基因组注释文件足够了，则使用-e参数；使用-e参数才可以运行prepDE.py3脚本得到readcount矩阵；用于计算readcounts时需要-e；如果不需要预测新的转录本时，需要使用-e,如果不使用-e则会使转录本稀释，导致所关注的转录本统计不到
     done
@@ -83,8 +84,13 @@ done
 ```
 ### 2.2 Merge the transcripts samples (处理多个生物学样本时需要合并)
 ```bash
-        vim mergelist.txt #需要包含之前output.gtf文件的路径
-        /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/gene_expression/rz1.transcripts.stringtie.gtf #txt文件内容
+        vim mergelist.txt #需要包含之前output.gtf文件的路径,下面是txt文件的内容，比如
+        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/Col-P1.transcripts.stringtie.gtf
+        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/Col-P2.transcripts.stringtie.gtf
+        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/Col-P3.transcripts.stringtie.gtf
+        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/rz1-P1.transcripts.stringtie.gtf
+        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/rzl-P2.transcripts.stringtie.gtf
+        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/rzl-P3.transcripts.stringtie.gtf
 
         stringtie --merge -G /public/home/zhangqq/Tair10_genome/TAIR10.gff3 \
                   -F 0.1 -T 0.1 -i -o /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/gene_expression/rz1.stringtie_merged.gtf \ 
