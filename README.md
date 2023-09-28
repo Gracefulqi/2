@@ -4,8 +4,8 @@
 
 ```bash
 #!/bin/bash
-#PBS -N QQtest
-#PBS -l nodes=1:ppn=12,mem=10G
+#PBS -N test
+#PBS -l nodes=1:ppn=12,mem=30G
 #PBS -q batch
 #PBS -j oe
 
