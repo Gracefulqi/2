@@ -98,16 +98,18 @@ done
 ```
 ### 2.3 Quantitative analysis
 ```bash 
-        vim sample_list.txt #需要包含样本名和定量的gtf文件的路径 rz1 /public/home/zhangqq/RNA-        seq_Col_rz1_FangYJ/gene_expression/rz1.transcripts.stringtie.gtf #txt文件内容，文件名和gtf文件之间用TAB键隔开
-source activate python2
+        vim sample_list.txt #需要包含样本名和定量的gtf文件的路径，以下是#txt文件内容，文件名和gtf文件之间用TAB键隔开
+        rz1        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/col-02d-1.transcripts.stringtie.gtf 
+        rz1        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/rz12d-1.transcripts.stringtie.gtf
+        source activate python2
         python /public/home/zhangqq/software/stringtie-2.2.1/prepDE.py \ #使用python的prepDE.py命令(prepDE.py在stringtie下面，写上prepDE.py的绝对路径,不写绝对路径，系统识别不出来)
                -i /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/gene_expression/sample_list.txt \
                -g /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/gene_expression/gene_count_matrix.csv \
                -t /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/gene_expression/transcript_count_matrix.csv
 (或用另一种方式处理)
-prepDE.py -i /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/gene_expression/sample_list.txt \
-          -g /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/gene_expression/gene_count_matrix.csv \
-          -t /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/gene_expression/transcript_count_matrix.csv
+prepDE.py -i /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/sample_list.txt \
+          -g /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/gene_count_matrix.csv \
+          -t /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/transcript_count_matrix.csv
 ```
 
 
