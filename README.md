@@ -34,10 +34,10 @@ do
 
         samtools index /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/map2/${name}-${i}.sorted.bam \
         bamCoverage --bam /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/map2/${name}-${i}.sorted.bam \
-                -o rz1.deeptools.bw \
+                -o rz1.deeptools.bw \#使用deeptools将bam转换bw
                 --binSize 10 \
-                --normalizeUsing RPGC \
-                --effectiveGenomeSize 119481543
+                --normalizeUsing RPGC \ 
+                --effectiveGenomeSize 119481543 #拟南芥的
         done
 done
 ```
