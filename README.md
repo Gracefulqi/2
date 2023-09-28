@@ -1,8 +1,8 @@
 ### RNA-seq pipeline (using Col-0,fpa-7 as example)
 
-### 1.1 Data quality control
-### 1.2 gene mapping
-### 1.3 convert BAM format to bigwig format
+### 1.1 Data quality control with fastp
+### 1.2 gene mapping with hisat2
+### 1.3 convert BAM format to bigwig format with deeptools
 
 ```bash
 #!/bin/bash
