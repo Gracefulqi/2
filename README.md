@@ -92,24 +92,41 @@ done
         /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/rzl-P2.transcripts.stringtie.gtf
         /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/rzl-P3.transcripts.stringtie.gtf
 
+for name in col-02d rz12d
+do
         stringtie --merge -G /public/home/zhangqq/Tair10_genome/TAIR10.gff3 \
-                  -F 0.1 -T 0.1 -i -o /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/gene_expression/rz1.stringtie_merged.gtf \ 
-                  mergelist.txt
+                  -F 0.1 -T 0.1 -i -o /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/${name}.stringtie_merged.gtf \ 
+                  /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/mergelist.txt #input文件路径
+done
 ```
-### 2.3 Quantitative analysis
+### 2.3 Reassmble the transcripts with merged gtf file and creat ballgown file (处理多个生物学样本时，需要用组装并且合并后的gtf文件，重新对每个生物学样品进行组装)
+```bash
+for name in col-02d rz12d
+do
+        for ((i=1;i<=3;i++))
+        do
+         stringtie /public/home/zhangqq/RNA-seq_Col_rz1/mapping_data/${name}-${i}.sorted.bam \#input file,此bam是samtools sort处理后的文件
+            -e -B -p 8 \
+            -G /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/${name}.stringtie_merged.gtf \#此文件是stringtie组装合并后的gtf文件
+            -o /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/ballgown/${name}/${name}-${i}.ballgown_merge.gtf \#首先创建一个ballgown文件，即mkdir ballgown; 此命令行为创建ballgown可读取文件;
+        done
+done
+```
+### 2.4 output read count
 ```bash 
         vim sample_list.txt #需要包含样本名和定量的gtf文件的路径，以下是#txt文件内容，文件名和gtf文件之间用TAB键隔开
-        rz1        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/col-02d-1.transcripts.stringtie.gtf 
+        col-0        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/col-02d-1.transcripts.stringtie.gtf 
         rz1        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/rz12d-1.transcripts.stringtie.gtf
+第一种方式(python2)
         source activate python2
         python /public/home/zhangqq/software/stringtie-2.2.1/prepDE.py \ #使用python的prepDE.py命令(prepDE.py在stringtie下面，写上prepDE.py的绝对路径,不写绝对路径，系统识别不出来)
                -i /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/gene_expression/sample_list.txt \
                -g /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/gene_expression/gene_count_matrix.csv \
                -t /public/home/zhangqq/RNA-seq_Col_rz1_FangYJ/gene_expression/transcript_count_matrix.csv
-(或用另一种方式处理)
+第二种方式处理(python3可以直接启用prepDE.py命令)
 prepDE.py -i /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/sample_list.txt \
           -g /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/gene_count_matrix.csv \
           -t /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/transcript_count_matrix.csv
 ```
-
+### 2.5 Quantitative analysis
 
