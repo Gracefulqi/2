@@ -115,8 +115,15 @@ done
 ### 2.4 output read count
 ```bash 
         vim sample_list.txt #需要包含样本名和定量的gtf文件的路径，以下是#txt文件内容，文件名和gtf文件之间用TAB键隔开
-        col-0        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/col-02d-1.transcripts.stringtie.gtf 
-        rz1        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/rz12d-1.transcripts.stringtie.gtf
+        col-02d-1        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/col-02d/col-02d-1.ballgown_merge.gtf
+        col-02d-2        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/col-02d/col-02d-2.ballgown_merge.gtf
+        col-02d-3        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/col-02d/col-02d-3.ballgown_merge.gtf 
+        rz12d-1        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/rz12d/rz12d-1.ballgown_merge.gtf
+        rz12d-2        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/rz12d/rz12d-2.ballgown_merge.gtf
+        rz12d-3        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/rz12d/rz12d-3.ballgown_merge.gtf
+或者   ?哪种对？
+        col-0        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/col-02d.stringtie_merged.gtf
+        rz1        /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/rz12d.stringtie_merged.gtf
 第一种方式(python2)
         source activate python2
         python /public/home/zhangqq/software/stringtie-2.2.1/prepDE.py \ #使用python的prepDE.py命令(prepDE.py在stringtie下面，写上prepDE.py的绝对路径,不写绝对路径，系统识别不出来)
