@@ -60,7 +60,7 @@ do
 done
 ```
 
-### 2 Get the gene expression matrix (stringtie可以组装转录本，包含内含子；featurecount只可计算外显子的表达量)
+### 2 Get the gene expression matrix (stringtie可以组装转录本，包含内含子；featurecount只可计算外显子的表达量；参考文献Transcript-level expression analysis of RNA-seq experiments with HISAT, StringTie and Ballgown，2016)
 ### 2.1 Assemble the transcripts
 ```
 #!/bin/bash
