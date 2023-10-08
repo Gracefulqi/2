@@ -135,5 +135,26 @@ prepDE.py -i /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/sample_list.txt \
           -g /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/gene_count_matrix.csv \
           -t /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/transcript_count_matrix.csv
 ```
-### 2.5 Quantitative analysis
+### 2.5 Quantitative analysis (将服务器上的matrix.csv文件下载后，使用RStudio本地软件运行DESeq2)
+```bash
+R
+> library(DESeq2) #导入数据
+> CountMatrix1<-read.csv("gene_count_matrix.csv",sep=",",row.names="gene_id")  ##修改列名
+> names(CountMatrix1)<-c("ctrl_rep1","ctrl_rep2","ctrl_rep"," rz1_rep1","rz1_rep2","rz1_rep3") #设置样本信息矩阵，包括处理信息：实验组rz1_rep vs. 对照组ctrl_rep，每个有3个
+> ColumnData<-data.frame(row.names=colnames(CountMatrix1),samName=colnames(CountMatrix1),
+condition=rep(c("ctrl_rep","rz1_rep"),each=3)) #生成DESeqDataSet数据集
+> dds<-DESeqDataSetFromMatrix(countData = CountMatrix1, colData = ColumnData, design = ~ condition) #DESeq差异表达计算
+> dds<-DESeq(dds)  #生成差异表达结果
+> res<-results(dds)  
+> summary(res) #查看总结信息（表达上调，下调等）
+> head(res) #统计padj（adjusted p-value）小于0.05的数目
+> table(res$padj <0.05) #统计padj（adjusted p-value）小于0.05的数目
+> res<- res[order(res$padj),]     #按padj排序
+> resdata <- merge(as.data.frame(res), as.data.frame(counts(dds, normalized=TRUE)),by="row.names",sort=FALSE)
+> write.csv(resdata,file = "rz1_vs_col.csv") #输出结果到csv文件
+> deg <- subset(res, padj <= 0.01 & abs(log2FoldChange) >= 1) #筛选显著差异表达基因（padj小于0.01且FoldChange绝对值大于2）
+> summary(deg)  #查看筛选后的总结信息
+> write.csv(deg, "rz1_vs_col.deg.csv")  #将差异表达显著的结果输出到csv文件
+```
+### 2.6 利用ggplot作图
 
