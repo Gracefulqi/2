@@ -159,8 +159,9 @@ condition=rep(c("ctrl_rep","rz1_rep"),each=3)) #生成DESeqDataSet数据集
 ### 2.6 利用ggplots作图
 ```bash
 > library(ggplot2)
-> volcano<- ggplot(resdata, aes(x= log2FoldChange, y= -1*log10(padj))) #x轴为log2FC；y轴为-log(padj)
-> threshold<-as.factor(resdata$padj <= 0.01 & abs(resdata$log2FoldChange) >= 2) #筛选条件（阈值）：绝对log2FC大于2，并且padj<0.01
+> volcano<- ggplot(resdata, aes(x= log2FoldChange, y= -1*log10(padj))) #x轴为log2FC；y轴为-log(padj); padj即p.adjust，转录组测序的差异表达分析是对大量的基因表达值进行的独立统计假设检验，存在假阳性问题，因此引入Padj对显著性P值（P.adjust）进行校正。Padj是对P-value的再判断，筛选更为严格。
+> threshold<-as.factor(resdata$padj <= 0.01 & abs(resdata$log2FoldChange) >= 2) #筛选条件（阈值）：绝对log2FC大于2，并且padj<0.01；
+其中log2FoldChange：对Fold Change取log2，一般默认表达相差2倍以上是有意义的，可以根据情况适当放宽至1.5/1.2，但最好不要低于1.2倍。
 > p1<-volcano+geom_point(aes(color=threshold)) 
 > p1 #加上各数据点信息
 > p2<-p1+scale_color_manual(values=c("grey","red"))
