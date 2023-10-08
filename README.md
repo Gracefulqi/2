@@ -138,7 +138,9 @@ prepDE.py -i /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/sample_list.txt \
 ### 2.5 Quantitative analysis (将服务器上的matrix.csv文件下载后，使用RStudio本地软件运行DESeq2)（引自https://www.jianshu.com/p/b86e5598468b）
 ```bash
 R
-> library(DESeq2) #导入数据
+> library(DESeq2) #启用DESeq2
+> setwd("D:/R_data/../.../..) #设置需要分析的文件路径
+> getwd() #查找目前文件的路径
 > CountMatrix1<-read.csv("gene_count_matrix.csv",sep=",",row.names="gene_id")  ##修改列名
 > names(CountMatrix1)<-c("ctrl_rep1","ctrl_rep2","ctrl_rep"," rz1_rep1","rz1_rep2","rz1_rep3") #设置样本信息矩阵，包括处理信息：实验组rz1_rep vs. 对照组ctrl_rep，每个有3个
 > ColumnData<-data.frame(row.names=colnames(CountMatrix1),samName=colnames(CountMatrix1),
