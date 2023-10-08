@@ -135,7 +135,7 @@ prepDE.py -i /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/sample_list.txt \
           -g /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/gene_count_matrix.csv \
           -t /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/transcript_count_matrix.csv
 ```
-### 2.5 Quantitative analysis (将服务器上的matrix.csv文件下载后，使用RStudio本地软件运行DESeq2)
+### 2.5 Quantitative analysis (将服务器上的matrix.csv文件下载后，使用RStudio本地软件运行DESeq2)（引自https://www.jianshu.com/p/b86e5598468b）
 ```bash
 R
 > library(DESeq2) #导入数据
