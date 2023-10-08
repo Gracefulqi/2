@@ -156,5 +156,22 @@ condition=rep(c("ctrl_rep","rz1_rep"),each=3)) #生成DESeqDataSet数据集
 > summary(deg)  #查看筛选后的总结信息
 > write.csv(deg, "rz1_vs_col.deg.csv")  #将差异表达显著的结果输出到csv文件
 ```
-### 2.6 利用ggplot作图
-
+### 2.6 利用ggplots作图
+```bash
+> library(ggplot2)
+> volcano<- ggplot(resdata, aes(x= log2FoldChange, y= -1*log10(padj))) #x轴为log2FC；y轴为-log(padj)
+> threshold<-as.factor(resdata$padj <= 0.01 & abs(resdata$log2FoldChange) >= 2) #筛选条件（阈值）：绝对log2FC大于2，并且padj<0.01
+> p1<-volcano+geom_point(aes(color=threshold)) 
+> p1 #加上各数据点信息
+> p2<-p1+scale_color_manual(values=c("grey","red"))
+> p2 #更改散点颜色
+> p3<-p2+geom_hline(yintercept=2,linetype=3)+geom_vline(xintercept=c(-2,2),linetype=3)
+> p3 #加上水平和垂直线，标识阈值选择范围
+> p4<-p3+theme(axis.line=element_line(colour="black"),panel.background = element_rect(fill = "white"))
+> p4 #修改图片背景填充颜色，坐标轴线条颜色
+> degs <- subset(resdata, padj <= 0.01 & abs(log2FoldChange)>= 2) 
+> p5<-p4+geom_text(aes(label=degs$Row.names),hjust=1, vjust=0,data = degs)
+> p5 #绘制P-value图
+> hist(deg$pvalue,breaks=10,col="grey",xlab="p-value") #绘制MA图
+> plot(deg$log2FoldChange,-log2(deg$padj),col=ifelse(abs(deg$log2FoldChange) >= 2 & abs(deg$padj) <= 0.05,"red","black"),xlab="log2FoldChange",ylab="-log2Pvalue")
+```
