@@ -138,25 +138,40 @@ prepDE.py -i /public/home/zhangqq/RNA-seq_Col_rz1/gene_exp/sample_list.txt \
 ### 2.5 Quantitative analysis (将服务器上的matrix.csv文件下载后，使用RStudio本地软件运行DESeq2)（引自https://www.jianshu.com/p/b86e5598468b）
 ```bash
 R
-> library(DESeq2) #启用DESeq2
+> library(DESeq2) #启用DESeq2程序包
 > setwd("D:/R_data/../.../..) #设置需要分析的文件路径
-> getwd() #查找目前文件的路径
+> getwd() #再次查看确定目前文件的路径
 > CountMatrix1<-read.csv("gene_count_matrix.csv",sep=",",row.names="gene_id")  ##修改列名
+> head(CountMatrix1) #显示CountMatrix1的信息
 > names(CountMatrix1)<-c("ctrl_rep1","ctrl_rep2","ctrl_rep"," rz1_rep1","rz1_rep2","rz1_rep3") #设置样本信息矩阵，包括处理信息：实验组rz1_rep vs. 对照组ctrl_rep，每个有3个
 > ColumnData<-data.frame(row.names=colnames(CountMatrix1),samName=colnames(CountMatrix1),
 condition=rep(c("ctrl_rep","rz1_rep"),each=3)) #生成DESeqDataSet数据集
-> dds<-DESeqDataSetFromMatrix(countData = CountMatrix1, colData = ColumnData, design = ~ condition) #DESeq差异表达计算
-> dds<-DESeq(dds)  #生成差异表达结果
-> res<-results(dds)  
-> summary(res) #查看总结信息（表达上调，下调等）
-> head(res) #统计padj（adjusted p-value）小于0.05的数目
-> table(res$padj <0.05) #统计padj（adjusted p-value）小于0.05的数目
-> res<- res[order(res$padj),]     #按padj排序
+> ColumnData #显示ColumnData的值
+
+> dds<-DESeqDataSetFromMatrix(countData = CountMatrix1, colData = ColumnData, design = ~ condition) #构建dds矩阵；DESeq差异表达计算；其中countData为表达矩阵，colData为样品信息矩阵，design为差异表达矩阵，即批次和条件(对照，处理)等
+
+> dds<-DESeq(dds)  #对原始dds进行normalize,生成差异表达结果
+> dds #显示dds信息
+
+> res<-results(dds) #使用DESeq2包中的results()函数，提取差异分析的结果，将提取的差异分析结果定义为变量“res”
+> res<-res[order(res$pvalue),] #对结果res利用order()函数按pvalue值进行排序；创建矩阵时，X[i,]指矩阵X中的第i行，X[,j]指矩阵X中的第j列；order()函数先对数值排序，然后返回排序后各数值的索引（此步同res<- res[order(res$padj),]）
+> head(res) #显示res结果信息
+> summary(res) #对res矩阵进行总结，利用summary命令统计显示，共有多少个基因上调和下调
+
+> table(res$padj <0.05) #统计padj（adjusted p-value）小于0.05的数目，padj即BH adjusted p-values，p值经过FDR多重校验校正后的值
+> res<- res[order(res$padj),]  #按padj排序
 > resdata <- merge(as.data.frame(res), as.data.frame(counts(dds, normalized=TRUE)),by="row.names",sort=FALSE)
 > write.csv(resdata,file = "rz1_vs_col.csv") #输出结果到csv文件
-> deg <- subset(res, padj <= 0.01 & abs(log2FoldChange) >= 1) #筛选显著差异表达基因（padj小于0.01且FoldChange绝对值大于2）
+
+> deg <- subset(res, padj <= 0.05 & abs(log2FoldChange) >= 1) #使用subset()函数过滤需要的结果至新的变量diff_gene_Group中；筛选显著差异表达基因（padj小于0.01且FoldChange绝对值大于2）
 > summary(deg)  #查看筛选后的总结信息
 > write.csv(deg, "rz1_vs_col.deg.csv")  #将差异表达显著的结果输出到csv文件
+
+> resSig<-res[which(res$pvalue<0.05 & abs(res$log2FoldChange>1)),] #对差异基因的结果进行差异筛选；此处采用p值<0.05, log2FoldChange>1,
+> resSig[which(resSig$log2FoldChange>0),'up_down']<-'up'
+> resSig[which(resSig$log2FoldChange<0),'up_down']<-'down'
+> head(resSig)
+> write.csv(resSig,"fpa_vs_col-diff-p-0.05-FC-1.csv")
 ```
 ### 2.6 利用ggplots作图
 ```bash
